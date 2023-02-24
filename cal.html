@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        .calculator {
+            display: inline-block;
+            border: 1px solid black;
+            padding: 10px;
+            font-size: 20px;
+        }
+
+        .display {
+            width: 100%;
+            margin-bottom: 10px;
+            font-size: 30px;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 5px;
+        }
+
+        button {
+            font-size: 20px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            border: none;
+            background-color: #eee;
+        }
+
+        button:hover {
+            background-color: #ddd;
+        }
+
+        .clear {
+            grid-column: 1 / span 2;
+        }
+
+        .calculate {
+            grid-column: 3 / span 2;
+        }
+
+        .operator {
+            background-color: #ff9900;
+            color: white;
+        }
+
+        .operator:hover {
+            background-color: #cc7a00;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="calculator">
+        <input type="text" class="display" readonly>
+        <div class="buttons">
+            <button class="num">7</button>
+            <button class="num">8</button>
+            <button class="num">9</button>
+            <button class="operator">+</button>
+            <button class="num">4</button>
+            <button class="num">5</button>
+            <button class="num">6</button>
+            <button class="operator">-</button>
+            <button class="num">1</button>
+            <button class="num">2</button>
+            <button class="num">3</button>
+            <button class="operator">*</button>
+            <button class="num">0</button>
+            <button class="num">.</button>
+            <button class="clear">C</button>
+            <button class="operator">/</button>
+            <button class="calculate">=</button>
+        </div>
+    </div>
+
+    <script>
+        const calculator = document.querySelector('.calculator');
+        const display = calculator.querySelector('.display');
+        const buttons = calculator.querySelector('.buttons');
+
+        let firstValue = '';
+        let operator = '';
+        let secondValue = '';
+        let result = '';
+
+        buttons.addEventListener('click', e => {
+            const target = e.target;
+            const value = target.textContent;
+
+            if (target.classList.contains('num')) {
+                if (operator === '') {
+                    firstValue += value;
+                    display.value = firstValue;
+                } else {
+                    secondValue += value;
+                    display.value = secondValue;
+                }
+            }
+
+            if (target.classList.contains('operator')) {
+                operator = value;
+            }
+
+            if (target.classList.contains('clear')) {
+                firstValue = '';
+                operator = '';
+                secondValue = '';
+                result = '';
+                display.value = '';
+            }
+
+            if (target.classList.contains('calculate')) {
+                switch (operator) {
+                    case '+':
+                        result = parseFloat(firstValue) + parseFloat(secondValue);
+                        break;
+                    case '-':
+                        result = parseFloat(firstValue) - parseFloat(secondValue);
+                        break;
+                    case '*':
+                        result = parseFloat(firstValue) * parseFloat(secondValue);
+                        break;
+                    case '/':
+                        result = parseFloat(firstValue) / parseFloat(secondValue);
+                        break;
+                }
+                display.value = result;
+                firstValue = result;
+                operator = '';
+                secondValue = '';
+            }
+        });
+
+    </script>
+
+</body>
+
+</html>
